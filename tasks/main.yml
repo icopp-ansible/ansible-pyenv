@@ -1,0 +1,24 @@
+---
+- name: Install pyenv via Homebrew
+  package:
+    name: pyenv
+    state: latest
+  when: ansible_os_family == "Darwin"
+
+- name: Add rbenv to fish config
+  lineinfile:
+    dest: ~/.config/fish/config.fish
+    line: status --is-interactive; and source (pyenv init -|psub)
+  when: ansible_os_family == "Darwin"
+
+- name: Add pyenv to bash config
+  lineinfile:
+    dest: ~/.bash_profile
+    line: if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
+  when: ansible_os_family == "Darwin"
+
+- name: Add pyenv to zsh config
+  lineinfile:
+    dest: ~/.zshrc
+    line: if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
+  when: ansible_os_family == "Darwin"
